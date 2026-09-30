@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Word Wheel — Product Requirements</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20263a;
+      --muted: #5e6680;
+      --paper: #f6f7fc;
+      --card: #fff;
+      --line: #e1e5f0;
+      --blue: #5365d9;
+      --mint: #d9f5e9;
+      --lilac: #e8e6ff;
+      --peach: #ffebd9;
+      --rose: #ffe1e5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { width: min(960px, calc(100% - 32px)); margin: 44px auto; }
+    header { padding: 36px; border-radius: 24px; background: #20263a; color: white; }
+    header p { max-width: 700px; margin-bottom: 0; color: #d8def8; }
+    .eyebrow { color: #aebaff; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 8px 0; font-size: clamp(2.3rem, 7vw, 4rem); line-height: 1.1; }
+    h2 { margin: 0 0 12px; font-size: 1.3rem; }
+    h3 { margin: 0 0 6px; font-size: 1rem; }
+    section, details { margin-top: 18px; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+    .diagram { overflow-x: auto; }
+    svg { display: block; min-width: 700px; width: 100%; height: auto; }
+    .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .screen { padding: 18px; border-radius: 14px; background: var(--lilac); }
+    .screen:nth-child(2) { background: var(--mint); }
+    .screen:nth-child(3) { background: var(--peach); }
+    .screen:nth-child(4) { background: var(--rose); }
+    .screen p, .screen ul { margin: 8px 0 0; color: var(--muted); }
+    .screen ul { padding-left: 20px; }
+    details { padding: 0; }
+    summary { padding: 18px 24px; cursor: pointer; font-weight: 700; }
+    details p, details ul { margin: 0; padding: 0 24px 20px; color: var(--muted); }
+    footer { margin: 20px 4px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 640px) {
+      main { margin: 20px auto; }
+      header { padding: 26px; }
+      section { padding: 18px; }
+      .screens { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Product requirements · based on approved scope</div>
+      <h1>Word Wheel</h1>
+      <p>A web app for people who want a simple, hands-on way to practice vocabulary with their own words or an essential-word set.</p>
+    </header>
+
+    <section class="diagram">
+      <h2>The learner's journey</h2>
+      <svg viewBox="0 0 960 245" role="img" aria-labelledby="journey-title journey-desc">
+        <title id="journey-title">Word Wheel journey</title>
+        <desc id="journey-desc">Choose an example set or add words, spin, flip the card to check the translation, mark recall, then restart or finish.</desc>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7a83a4"></path></marker></defs>
+        <rect x="15" y="62" width="205" height="112" rx="18" fill="#e8e6ff"></rect>
+        <text x="117" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#20263a">Choose a path</text>
+        <text x="117" y="128" text-anchor="middle" font-size="14" fill="#5e6680">example or add words</text>
+        <path d="M228 118H278" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="290" y="62" width="185" height="112" rx="18" fill="#d9f5e9"></rect>
+        <text x="382" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#20263a">Spin</text>
+        <text x="382" y="128" text-anchor="middle" font-size="14" fill="#5e6680">select one word</text>
+        <path d="M483 118H533" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="545" y="62" width="185" height="112" rx="18" fill="#ffebd9"></rect>
+        <text x="637" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#20263a">Recall · reveal</text>
+        <text x="637" y="128" text-anchor="middle" font-size="14" fill="#5e6680">mark got it / not yet</text>
+        <path d="M738 118H788" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="800" y="62" width="145" height="112" rx="18" fill="#ffe1e5"></rect>
+        <text x="872" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#20263a">Complete</text>
+        <text x="872" y="128" text-anchor="middle" font-size="14" fill="#5e6680">restart or finish</text>
+        <path d="M872 182C872 225 380 225 380 182" fill="none" stroke="#7a83a4" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrow)"></path>
+        <text x="625" y="225" text-anchor="middle" font-size="13" fill="#5e6680">restart restores the words for another round</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>What each surface does</h2>
+      <div class="screens">
+        <article class="screen">
+          <h3>Main page / wheel</h3>
+          <p>Starts with an empty wheel and a central add sign; titled example blocks appear beneath it. Choosing an example loads 15–20 words. A spin button is available once a set is loaded.</p>
+        </article>
+        <article class="screen">
+          <h3>Add words page</h3>
+          <p>Separate page for one-at-a-time entry. Word and translation are required; color is optional. Added entries appear below the fields. Start requires at least two entries.</p>
+        </article>
+        <article class="screen">
+          <h3>Practice card</h3>
+          <p>Spin selects one word. The learner tries to recall it, taps the card to reveal the translation, then chooses “I got it” or “Not yet.”</p>
+        </article>
+        <article class="screen">
+          <h3>Round complete</h3>
+          <p>After every word has left the current round, the learner can restore the words and restart or finish the round.</p>
+        </article>
+      </div>
+    </section>
+
+    <details open>
+      <summary>Behavior · choosing a set and adding words</summary>
+      <ul>
+        <li>Offer English–Spanish, English–French, and English–German essential-word examples, each with 15–20 words.</li>
+        <li>Example choice loads its words onto the wheel; custom words have no language selection.</li>
+        <li>Require both word and translation before adding an entry. Show added words below the form.</li>
+        <li>Warn and do not start when fewer than two custom words are present.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Behavior · spin, reveal, and self-assess</summary>
+      <ul>
+        <li>Show the selected word on a card; tapping flips it to reveal its translation.</li>
+        <li>“I got it” removes that word for this round; “Not yet” keeps it for another turn.</li>
+        <li>When all words have left the wheel, offer restart or finish. Restart restores the words.</li>
+      </ul>
+    </details>
+    <details open>
+      <summary>Acceptance checks · observable proof</summary>
+      <ul>
+        <li>First opening shows an empty wheel, central add sign, and titled example blocks.</li>
+        <li>Choosing each ready-made set loads 15–20 words and enables spinning.</li>
+        <li>The add sign opens the separate entry page; added complete pairs appear below the form.</li>
+        <li>An incomplete pair is not added and produces a warning. Starting with fewer than two words warns and does not begin practice.</li>
+        <li>Spinning shows a word; tapping reveals its translation. “I got it” removes it for the round; “Not yet” keeps it available.</li>
+        <li>When all words have left the round, restart restores them and finish ends the round.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Look and feel</summary>
+      <p>Use a clear, cheerful style that makes the colorful wheel prominent and controls easy to understand. The learner delegated visual choices to the assistant and did not specify a font, palette, or reference.</p>
+    </details>
+    <details>
+      <summary>Out of scope and later</summary>
+      <p>Accounts and saved progress are deferred to a later version. The first version does not automatically grade spoken or typed translations; learners self-assess.</p>
+    </details>
+    <details>
+      <summary>Open for build time</summary>
+      <p>The exact words in the three ready-made sets can be chosen during the build, as requested.</p>
+    </details>
+    <footer>Canonical requirements are in <code>prd.md</code>. This visual companion is designed to work offline.</footer>
+  </main>
+</body>
+</html>

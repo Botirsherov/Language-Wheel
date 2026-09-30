@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Word Wheel - Project Scope</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20263a;
+      --muted: #5e6680;
+      --paper: #f6f7fc;
+      --card: #fff;
+      --line: #e1e5f0;
+      --blue: #5365d9;
+      --mint: #d9f5e9;
+      --lilac: #e8e6ff;
+      --peach: #ffebd9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { width: min(940px, calc(100% - 32px)); margin: 48px auto; }
+    header { padding: 36px; border-radius: 24px; background: #20263a; color: white; }
+    header p { max-width: 680px; margin-bottom: 0; color: #d8def8; }
+    .eyebrow { color: #aebaff; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 8px 0; font-size: clamp(2.3rem, 7vw, 4rem); line-height: 1.1; }
+    h2 { margin: 0 0 12px; font-size: 1.25rem; }
+    section, details { margin-top: 18px; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+    .diagram { overflow-x: auto; }
+    svg { display: block; min-width: 620px; width: 100%; height: auto; }
+    .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .flow article { padding: 16px; border-radius: 14px; background: var(--lilac); }
+    .flow article:nth-child(2) { background: var(--mint); }
+    .flow article:nth-child(3) { background: var(--peach); }
+    .flow p, .stake p { margin: 0; color: var(--muted); }
+    details { padding: 0; }
+    summary { padding: 18px 24px; cursor: pointer; font-weight: 700; }
+    details p, details ul { margin: 0; padding: 0 24px 20px; color: var(--muted); }
+    footer { margin: 20px 4px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 620px) {
+      main { margin: 20px auto; }
+      header { padding: 26px; }
+      .flow { grid-template-columns: 1fr; }
+      section { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Project scope · proof of concept</div>
+      <h1>Word Wheel</h1>
+      <p>A web app where learners practice vocabulary with a colorful spinning wheel and a flip-to-reveal translation card.</p>
+    </header>
+
+    <section class="diagram">
+      <h2>From learner to proof</h2>
+      <svg viewBox="0 0 900 210" role="img" aria-labelledby="diagram-title diagram-desc">
+        <title id="diagram-title">Word Wheel practice loop</title>
+        <desc id="diagram-desc">A vocabulary learner spins a wheel, checks the translation on a card, marks recall, and practices the remaining words again.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0 0L10 5L0 10z" fill="#7a83a4"></path>
+          </marker>
+        </defs>
+        <rect x="18" y="52" width="190" height="100" rx="18" fill="#e8e6ff"></rect>
+        <text x="113" y="91" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Learner</text>
+        <text x="113" y="119" text-anchor="middle" font-size="14" fill="#5e6680">needs word practice</text>
+        <path d="M216 102H292" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="304" y="38" width="290" height="128" rx="18" fill="#d9f5e9"></rect>
+        <text x="449" y="72" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Spin · recall · reveal</text>
+        <text x="449" y="102" text-anchor="middle" font-size="14" fill="#5e6680">mark “I got it” or “not yet”</text>
+        <text x="449" y="128" text-anchor="middle" font-size="14" fill="#5e6680">missed words stay for practice</text>
+        <path d="M602 102H678" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="690" y="52" width="192" height="100" rx="18" fill="#ffebd9"></rect>
+        <text x="786" y="91" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Visible proof</text>
+        <text x="786" y="119" text-anchor="middle" font-size="14" fill="#5e6680">round resets to practice</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>The idea</h2>
+      <div class="flow">
+        <article><strong>Distinctive kernel</strong><p>Words marked “I got it” leave the current round. “Not yet” words stay; when the round ends, words return for another practice round.</p></article>
+        <article><strong>Who it helps</strong><p>People who have trouble learning and remembering vocabulary, including learners practicing English–Spanish, English–French, or English–German.</p></article>
+        <article><strong>Why it matters</strong><p>The learner sees many people struggle to learn words and wants to make a web app to help them practice.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>What working looks like</h2>
+      <p>Someone opens a page with a large wheel and example blocks, chooses words or adds their own, spins to get a word, flips its card to reveal the translation, and marks whether they remembered it. Correct words leave the current round while missed words remain; when the round is over, the words return so they can practice again.</p>
+    </section>
+
+    <details open>
+      <summary>Now · the proof of concept</summary>
+      <ul>
+        <li>One page with a large wheel, an add sign, and titled essential-word examples.</li>
+        <li>Add words and translations; optionally choose colors for words.</li>
+        <li>Include a few ready-made words for English–Spanish, English–French, and English–German.</li>
+        <li>Spin, reveal the translation by flipping a card, self-mark recall, and restart a round.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Later · beyond the first version</summary>
+      <p>Accounts that save progress between visits.</p>
+    </details>
+    <details>
+      <summary>Cut · intentionally not in this version</summary>
+      <p>Accounts and persistent progress are left out because the learner identified them as a future addition, not part of the first practice experiment.</p>
+    </details>
+    <footer>Markdown in <code>scope.md</code> is the canonical project plan; this page is its visual companion.</footer>
+  </main>
+</body>
+</html>
