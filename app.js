@@ -2,6 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "wordWheel.activeSession";
+  const DRAFT_KEY = "wordWheel.customDraft";
   const SEGMENT_COLORS = ["#f6b66b", "#91d8c0", "#9f9bf0", "#f28f9d", "#8dc9e8", "#f0d56f"];
   const wheel = document.getElementById("wheel");
   const wheelLabels = document.getElementById("wheel-labels");
@@ -26,7 +27,9 @@
       const saved = window.sessionStorage.getItem(STORAGE_KEY);
       return saved ? JSON.parse(saved) : null;
     } catch (error) {
-      wheelMessage.textContent = "This tab could not restore its practice. Choose an example set to start again.";
+      if (wheelMessage) {
+        wheelMessage.textContent = "This tab could not restore its practice. Choose an example set to start again.";
+      }
       return null;
     }
   }
@@ -248,13 +251,161 @@
     render();
   }
 
-  spinButton.addEventListener("click", spin);
-  wordCard.addEventListener("click", revealCard);
-  document.getElementById("got-it-button").addEventListener("click", function () { markRecall(true); });
-  document.getElementById("not-yet-button").addEventListener("click", function () { markRecall(false); });
-  document.getElementById("restart-button").addEventListener("click", restartRound);
-  document.getElementById("finish-button").addEventListener("click", finishRound);
+  function initializeWheelPage() {
+    spinButton.addEventListener("click", spin);
+    wordCard.addEventListener("click", revealCard);
+    document.getElementById("got-it-button").addEventListener("click", function () { markRecall(true); });
+    document.getElementById("not-yet-button").addEventListener("click", function () { markRecall(false); });
+    document.getElementById("restart-button").addEventListener("click", restartRound);
+    document.getElementById("finish-button").addEventListener("click", finishRound);
 
-  renderExamples();
-  render();
+    renderExamples();
+    render();
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        activeSession = readSession();
+        render();
+      }
+    });
+  }
+
+  function initializeAddWordsPage() {
+    const form = document.getElementById("word-form");
+    if (!form) {
+      return;
+    }
+
+    const wordInput = document.getElementById("word-input");
+    const translationInput = document.getElementById("translation-input");
+    const colorInput = document.getElementById("color-input");
+    const list = document.getElementById("custom-word-list");
+    const count = document.getElementById("word-count");
+    const message = document.getElementById("form-message");
+    let customWords = [];
+    let nextId = 0;
+
+    function showMessage(text, isError) {
+      message.textContent = text;
+      message.classList.toggle("is-error", Boolean(isError));
+      message.classList.toggle("is-success", Boolean(text) && !isError);
+    }
+
+    function loadDraft() {
+      try {
+        const saved = window.sessionStorage.getItem(DRAFT_KEY);
+        const parsed = saved ? JSON.parse(saved) : [];
+        customWords = Array.isArray(parsed) ? parsed.filter(function (item) {
+          return item && typeof item.word === "string" &&
+            typeof item.translation === "string" && typeof item.color === "string";
+        }) : [];
+        nextId = customWords.length;
+        return true;
+      } catch (error) {
+        showMessage("Could not load the words saved in this tab. Please refresh and try again.", true);
+        return false;
+      }
+    }
+
+    function persistDraft() {
+      try {
+        window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(customWords));
+        return true;
+      } catch (error) {
+        showMessage("Could not save this word in the browser tab. Keep this page open and try again.", true);
+        return false;
+      }
+    }
+
+    function renderList() {
+      list.replaceChildren();
+      customWords.forEach(function (item) {
+        const row = document.createElement("li");
+        row.className = "custom-word-row";
+        const swatch = document.createElement("span");
+        swatch.className = "word-color-swatch";
+        swatch.style.backgroundColor = item.color;
+        swatch.setAttribute("aria-label", "Word color");
+        const text = document.createElement("span");
+        text.className = "custom-word-copy";
+        const word = document.createElement("strong");
+        word.textContent = item.word;
+        const translation = document.createElement("span");
+        translation.textContent = item.translation;
+        text.append(word, translation);
+        row.append(swatch, text);
+        list.appendChild(row);
+      });
+      count.textContent = customWords.length + (customWords.length === 1 ? " word added" : " words added");
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const word = wordInput.value.trim();
+      const translation = translationInput.value.trim();
+      if (!word || !translation) {
+        showMessage("Enter both a word and its translation before adding it.", true);
+        (!word ? wordInput : translationInput).focus();
+        return;
+      }
+
+      customWords.push({
+        id: "custom-" + Date.now() + "-" + nextId,
+        word: word,
+        translation: translation,
+        color: colorInput.value
+      });
+      nextId += 1;
+      if (!persistDraft()) {
+        customWords.pop();
+        nextId -= 1;
+        return;
+      }
+
+      renderList();
+      wordInput.value = "";
+      translationInput.value = "";
+      wordInput.focus();
+      showMessage("Word added. You can enter another one.", false);
+    });
+
+    document.getElementById("start-custom-practice").addEventListener("click", function () {
+      if (customWords.length < 2) {
+        showMessage("Add at least two words before you start practicing.", true);
+        wordInput.focus();
+        return;
+      }
+      const words = customWords.map(function (word) {
+        return {
+          id: word.id,
+          word: word.word,
+          translation: word.translation,
+          color: word.color
+        };
+      });
+      activeSession = {
+        source: "custom",
+        words: words,
+        remainingIds: words.map(function (word) { return word.id; }),
+        selectedId: null,
+        revealed: false
+      };
+      try {
+        window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(activeSession));
+        window.sessionStorage.removeItem(DRAFT_KEY);
+        window.location.href = "./";
+      } catch (error) {
+        showMessage("Could not start practice because this tab could not save your word list. Keep this page open and try again.", true);
+      }
+    });
+
+    if (loadDraft()) {
+      renderList();
+    }
+  }
+
+  if (wheel) {
+    initializeWheelPage();
+  } else {
+    initializeAddWordsPage();
+  }
 }());

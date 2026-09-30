@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f7fc">
-  <title>Add words — Word Wheel</title>
+  <title>Add your words — Word Wheel</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
   <main class="page">
@@ -16,15 +17,46 @@
       </a>
       <p>Your words, your way.</p>
     </header>
-    <section class="practice-section">
-      <div class="empty-message">
-        <span class="complete-icon" aria-hidden="true">✦</span>
-        <p class="eyebrow">Custom word practice</p>
-        <h1>Your word list is coming next</h1>
-        <p class="intro">The next build step adds the word-and-translation form. For now, try a ready-made set from the wheel page.</p>
-        <a class="button button-primary return-link" href="./">Back to the wheel</a>
+    <section class="add-page-section" aria-labelledby="add-page-title">
+      <div class="add-page-heading">
+        <a class="back-link" href="./">← Back to the wheel</a>
+        <p class="eyebrow">Make a set that is yours</p>
+        <h1 id="add-page-title">Add your words</h1>
+        <p class="intro">Add each word with its translation. Your list is kept in this browser tab while you practice.</p>
+      </div>
+
+      <div class="add-layout">
+        <form id="word-form" class="word-form" novalidate>
+          <label for="word-input">Word</label>
+          <input id="word-input" name="word" type="text" autocomplete="off" placeholder="e.g. morning">
+
+          <label for="translation-input">Translation</label>
+          <input id="translation-input" name="translation" type="text" autocomplete="off" placeholder="e.g. mañana">
+
+          <div class="color-field">
+            <label for="color-input">Word color <span>(optional)</span></label>
+            <input id="color-input" name="color" type="color" value="#91d8c0" aria-label="Choose a color for this word">
+          </div>
+
+          <button class="button button-secondary add-entry-button" type="submit">Add this word <span aria-hidden="true">+</span></button>
+          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <section class="added-words-panel" aria-labelledby="added-words-title">
+          <div class="added-words-heading">
+            <div>
+              <p class="eyebrow">Your growing list</p>
+              <h2 id="added-words-title">Added words</h2>
+            </div>
+            <span id="word-count" class="word-count">0 words added</span>
+          </div>
+          <ul id="custom-word-list" class="custom-word-list"></ul>
+          <p class="minimum-hint">Add at least two words to start your practice round.</p>
+          <button id="start-custom-practice" class="button button-primary start-custom-button" type="button">Start practicing</button>
+        </section>
       </div>
     </section>
+    <footer class="site-footer">A little practice, one word at a time.</footer>
   </main>
 </body>
 </html>

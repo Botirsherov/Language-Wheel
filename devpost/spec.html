@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Word Wheel — Technical Blueprint</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20263a;
+      --muted: #5e6680;
+      --paper: #f6f7fc;
+      --card: #fff;
+      --line: #e1e5f0;
+      --blue: #5365d9;
+      --mint: #d9f5e9;
+      --lilac: #e8e6ff;
+      --peach: #ffebd9;
+      --rose: #ffe1e5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { width: min(980px, calc(100% - 32px)); margin: 44px auto; }
+    header { padding: 36px; border-radius: 24px; background: #20263a; color: white; }
+    header p { max-width: 720px; margin-bottom: 0; color: #d8def8; }
+    .eyebrow { color: #aebaff; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 8px 0; font-size: clamp(2.2rem, 7vw, 3.8rem); line-height: 1.1; }
+    h2 { margin: 0 0 12px; font-size: 1.3rem; }
+    h3 { margin: 0 0 6px; font-size: 1rem; }
+    section, details { margin-top: 18px; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+    .diagram { overflow-x: auto; }
+    svg { display: block; min-width: 720px; width: 100%; height: auto; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .card { padding: 16px; border-radius: 14px; background: var(--lilac); }
+    .card:nth-child(2) { background: var(--mint); }
+    .card:nth-child(3) { background: var(--peach); }
+    .card p { margin: 0; color: var(--muted); }
+    details { padding: 0; }
+    summary { padding: 18px 24px; cursor: pointer; font-weight: 700; }
+    details p, details ul, details ol { margin: 0; padding: 0 24px 20px; color: var(--muted); }
+    footer { margin: 20px 4px; color: var(--muted); font-size: .9rem; }
+    code { padding: 2px 5px; border-radius: 5px; background: #eef0f7; color: #39415e; }
+    @media (max-width: 650px) {
+      main { margin: 20px auto; }
+      header { padding: 26px; }
+      section { padding: 18px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Technical blueprint · no backend needed</div>
+      <h1>Word Wheel</h1>
+      <p>A small HTML, CSS, and JavaScript app that runs in your browser. Your words travel between its pages in temporary storage for the current browser tab.</p>
+    </header>
+
+    <section class="diagram">
+      <h2>How the parts connect</h2>
+      <svg viewBox="0 0 960 280" role="img" aria-labelledby="arch-title arch-desc">
+        <title id="arch-title">Word Wheel pages and browser storage</title>
+        <desc id="arch-desc">The main page and add words page use shared JavaScript and CSS. The example data and temporary session storage supply the word lists. Everything runs in the local browser from a Python static server.</desc>
+        <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7a83a4"></path></marker></defs>
+        <rect x="18" y="28" width="265" height="96" rx="18" fill="#e8e6ff"></rect>
+        <text x="150" y="64" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Main wheel page</text>
+        <text x="150" y="92" text-anchor="middle" font-size="14" fill="#5e6680">choose set · spin · reveal</text>
+        <rect x="18" y="155" width="265" height="96" rx="18" fill="#d9f5e9"></rect>
+        <text x="150" y="191" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Add words page</text>
+        <text x="150" y="219" text-anchor="middle" font-size="14" fill="#5e6680">enter pairs · start practice</text>
+        <rect x="360" y="79" width="255" height="116" rx="18" fill="#ffebd9"></rect>
+        <text x="487" y="117" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Shared JavaScript</text>
+        <text x="487" y="146" text-anchor="middle" font-size="14" fill="#5e6680">wheel · validation · round</text>
+        <text x="487" y="169" text-anchor="middle" font-size="14" fill="#5e6680">card · tab storage</text>
+        <path d="M291 75H348" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <path d="M291 201H348" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <rect x="690" y="28" width="250" height="96" rx="18" fill="#ffe1e5"></rect>
+        <text x="815" y="64" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">Example data</text>
+        <text x="815" y="92" text-anchor="middle" font-size="14" fill="#5e6680">three built-in word lists</text>
+        <rect x="690" y="155" width="250" height="96" rx="18" fill="#e8e6ff"></rect>
+        <text x="815" y="191" text-anchor="middle" font-size="18" font-weight="700" fill="#20263a">sessionStorage</text>
+        <text x="815" y="219" text-anchor="middle" font-size="14" fill="#5e6680">words in this tab only</text>
+        <path d="M623 103H678" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <path d="M623 171H678" stroke="#7a83a4" stroke-width="3" marker-end="url(#arrow)"></path>
+        <text x="480" y="273" text-anchor="middle" font-size="13" fill="#5e6680">Python's local web server serves the files; the browser runs the app.</text>
+      </svg>
+    </section>
+
+    <section>
+      <h2>One word, through the app</h2>
+      <div class="grid">
+        <article class="card"><h3>1 · Choose or enter</h3><p>Example data or the add form supplies word and translation pairs.</p></article>
+        <article class="card"><h3>2 · Keep in this tab</h3><p>JavaScript puts the current set and round into the browser's temporary notebook, <code>sessionStorage</code>.</p></article>
+        <article class="card"><h3>3 · Practice and update</h3><p>The wheel picks a word; the card reveals its translation; a recall choice updates the current round.</p></article>
+      </div>
+    </section>
+
+    <details open>
+      <summary>What is the app made of?</summary>
+      <ul>
+        <li><code>index.html</code> — main page, examples, wheel, card, and round controls.</li>
+        <li><code>add-words.html</code> — one-at-a-time custom word entry and list.</li>
+        <li><code>app.js</code> — page interactions, validation, spin and recall behavior, tab storage.</li>
+        <li><code>word-sets.js</code> — the three built-in example lists.</li>
+        <li><code>styles.css</code> — colorful wheel, responsive layout, and card animation.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Where the words live</summary>
+      <p>Custom words and the active round are kept in <code>sessionStorage</code>, which acts like a short-term notebook for this browser tab. They stay available when navigating between the two pages or refreshing in this tab, but are cleared when the tab closes. There is no account, database, or promise of saving progress for another visit.</p>
+    </details>
+    <details>
+      <summary>Run it and record the demo</summary>
+      <ol>
+        <li>From the project folder, run <code>py -m http.server 8000</code> (or <code>python -m http.server 8000</code>).</li>
+        <li>Open <code>http://localhost:8000/</code> in a browser.</li>
+        <li>Choose an example or add at least two custom words, then show spin, card reveal, both recall outcomes, and restart/finish.</li>
+      </ol>
+      <p>No packages, API keys, or deployment are required. The submission still needs a short demo video and a public GitHub repository.</p>
+    </details>
+    <details>
+      <summary>Tradeoffs and open build detail</summary>
+      <p>This keeps the proof of concept local and avoids a backend; closing the tab clears temporary words. Exact example vocabulary can be selected during the build. Use a clear, cheerful appearance and keep the wheel prominent.</p>
+    </details>
+    <footer>Canonical technical plan: <code>spec.md</code>. Documentation: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">MDN sessionStorage</a> · <a href="https://docs.python.org/3/library/http.server.html">Python http.server</a>.</footer>
+  </main>
+</body>
+</html>
