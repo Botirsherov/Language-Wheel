@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fc">
+  <title>Word Wheel — Practice vocabulary</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="word-sets.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Word Wheel home">
+        <span class="brand-mark" aria-hidden="true">✳</span>
+        <span>Word Wheel</span>
+      </a>
+      <p>Little spins. Lasting words.</p>
+    </header>
+
+    <section class="practice-section" aria-labelledby="page-title">
+      <div class="section-heading">
+        <p class="eyebrow">Your vocabulary, your pace</p>
+        <h1 id="page-title">Give your words a spin</h1>
+        <p class="intro">Choose a word set below, or add words of your own to start practicing.</p>
+      </div>
+
+      <div class="wheel-layout">
+        <div class="wheel-column">
+          <div class="wheel-shell">
+            <span class="wheel-pointer" aria-hidden="true"></span>
+            <div id="wheel" class="wheel" role="img" aria-label="An empty vocabulary wheel">
+              <div id="wheel-labels" class="wheel-labels" aria-hidden="true"></div>
+              <a id="add-words-link" class="wheel-add" href="add-words.html" aria-label="Add your own words">
+                <span aria-hidden="true">+</span>
+                <small>Add words</small>
+              </a>
+            </div>
+          </div>
+          <button id="spin-button" class="button button-primary spin-button" type="button" hidden>Spin the wheel</button>
+          <p id="wheel-message" class="status-message" role="status" aria-live="polite"></p>
+        </div>
+
+        <section id="practice-panel" class="practice-panel" aria-label="Selected word" hidden>
+          <p class="eyebrow">Your word</p>
+          <button id="word-card" class="word-card" type="button" aria-label="Reveal translation" aria-pressed="false">
+            <span class="card-inner">
+              <span id="card-word" class="card-face card-front"></span>
+              <span id="card-translation" class="card-face card-back" aria-hidden="true"></span>
+            </span>
+          </button>
+          <p id="card-hint" class="card-hint">Take a moment to remember it, then tap the card.</p>
+          <div id="recall-actions" class="recall-actions" hidden>
+            <button id="got-it-button" class="button button-primary" type="button">I got it</button>
+            <button id="not-yet-button" class="button button-secondary" type="button">Not yet</button>
+          </div>
+          <p id="recall-message" class="status-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section id="complete-panel" class="complete-panel" aria-live="polite" hidden>
+          <span class="complete-icon" aria-hidden="true">✓</span>
+          <p class="eyebrow">Round complete</p>
+          <h2>Lovely work!</h2>
+          <p>You got every word this round. Want to practice them again?</p>
+          <div class="recall-actions">
+            <button id="restart-button" class="button button-primary" type="button">Restart round</button>
+            <button id="finish-button" class="button button-secondary" type="button">Finish</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="examples-section" class="examples-section" aria-labelledby="examples-title">
+      <div class="examples-heading">
+        <div>
+          <p class="eyebrow">Ready when you are</p>
+          <h2 id="examples-title">Try an essential-word set</h2>
+        </div>
+        <p>Pick a set to fill the wheel.</p>
+      </div>
+      <div id="example-sets" class="example-grid"></div>
+    </section>
+
+    <footer class="site-footer">A little practice, one word at a time.</footer>
+  </main>
+</body>
+</html>
